@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎀 Для Макса с любовью ✨</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+    <style>
+        /* Эмодзи как замена картинкам */
+        .emoji-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 5px rgba(255,182,193,0.5));
+        }
+    </style>
+</head>
+<body>
+    <!-- Музыкальный плеер -->
+    <audio id="bgMusic" loop></audio>
+    <div class="music-player hidden" id="musicPlayer">
+        <div class="music-info">
+            <span class="emoji-icon">🎸</span>
+            <span class="music-title" id="currentSongTitle">K-On! - Fuwa Fuwa Time</span>
+            <div class="music-controls">
+                <button id="playPauseBtn">⏸️</button>
+                <button id="nextSongBtn">⏭️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Счетчик сердечек -->
+    <div class="heart-counter" id="heartCounter">
+        <div class="heart-icon">❤️</div>
+        <div class="heart-count" id="heartCount">0/16</div>
+        <div class="heart-bag">
+            <span class="emoji-icon">🧸</span>
+        </div>
+    </div>
+
+    <!-- Контейнер для плавающих котиков (эмодзи) -->
+    <div class="floating-cats" id="floatingCats"></div>
+
+    <!-- Стартовое окно -->
+    <div class="start-window" id="startWindow">
+        <div class="dialog-box anime-style">
+            <div class="anime-girl">
+                <span class="emoji-icon large">🎀</span>
+                <div class="speech-bubble">
+                    <p>お誕生日おめでとう! ✨</p>
+                    <p>С днём рождения, Макс! 🎉</p>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn primary-btn kawaii-btn" id="openEnvelopeBtn">📩 Открыть конверт</button>
+                <button class="btn secondary-btn kawaii-btn" id="congratsBtn">🎉 Поздравлениe</button>
+            </div>
+            <div class="floating-cat">
+                <span class="emoji-icon">🐱</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с поздравлением -->
+    <div class="modal" id="congratsModal">
+        <div class="modal-content anime-modal">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <div class="modal-header">
+                <span class="emoji-icon large">🌸</span>
+                <h2>С днём рождения! 🎂</h2>
+            </div>
+            <div class="modal-body">
+                <p>с днём рождения, макс.
+я долго думала, что сказать, и поняла, что самое главное — это спасибо. спасибо за то, что ты есть и что мы вообще познакомились.
+
+ты очень по-своему особенный человек. с тобой легко смеяться, легко молчать и даже спорить. и это правда круто.
+
+я хочу, чтобы в этом году у тебя было больше уверенности, больше радости и меньше сомнений в себе. ты способен на многое, даже если иногда сам в это не веришь.
+
+просто знай, что я очень ценю тебя. и рада, что ты рядом. 🥺</p>
+                <p>жаль, что мы сейчас далеко друг от друга, но этот сайт — маленькая частичка моего сердца, которая в любой момент будет напоминать тебе, как сильно ты мне дорог. ❤️</p>
+                <div class="modal-cats">
+                    <span class="emoji-icon">🐱</span>
+                    <span class="emoji-icon">😺</span>
+                    <span class="emoji-icon">😸</span>
+                </div>
+                <p>пусть у тебя всё получается, а я всегда буду рядом, даже на расстоянии. ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content hidden" id="mainContent">
+        
+        <!-- Секретное слово -->
+        <div class="secret-section anime-box">
+            <div class="section-header">
+                <span class="emoji-icon">🔐</span>
+                <h2 class="section-title">Найди секретное слово</h2>
+            </div>
+            <div class="secret-input-group">
+                <input type="text" id="secretInput" placeholder="Введи секретное слово...">
+                <button class="btn small-btn kawaii-btn" id="checkSecretBtn">Проверить</button>
+            </div>
+            <div id="secretMessage" class="secret-message hidden">💝 Я тебя люблю! 💝</div>
+            <div class="floating-cat-mini">
+                <span class="emoji-icon">🐱</span>
+            </div>
+        </div>
+
+        <!-- Баночка с причинами -->
+        <section class="jar-section anime-box">
+            <div class="section-header">
+                <span class="emoji-icon">🏺</span>
+                <h2 class="section-title">Почему я тебя люблю ❤️</h2>
+            </div>
+            <div class="jar-container">
+                <div class="jar-wrapper">
+                    <div class="jar anime-jar" id="jar">
+                        <div class="jar-lid">
+                            <span class="emoji-icon">🎀</span>
+                        </div>
+                        <div class="jar-body">
+                            <div class="jar-content">
+                                <span class="emoji-icon large">🧸</span>
+                            </div>
+                        </div>
+                        <div class="jar-shadow"></div>
+                    </div>
+                    <div class="jar-label">
+                        <span>Нажми на баночку!</span>
+                        <span class="emoji-icon">👉</span>
+                    </div>
+                </div>
+                <div class="cards-container" id="cardsContainer"></div>
+            </div>
+            
+            <!-- Диалоговое окно -->
+            <div class="dialog-popup anime-dialog hidden" id="dialogPopup">
+                <span class="emoji-icon">😊</span>
+                <p>Хочешь узнать ещё причины?</p>
+                <div class="button-group">
+                    <button class="btn small-btn kawaii-btn" id="continueBtn">はい！(Да!)</button>
+                    <button class="btn small-btn secondary kawaii-btn" id="moreReasonsBtn">もっと見る(Ещё)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Песни -->
+        <section class="songs-section anime-box hidden" id="songsSection">
+            <div class="section-header">
+                <span class="emoji-icon">🎵</span>
+                <h2 class="section-title">Песни, которые ассоциируются с тобой</h2>
+            </div>
+            <div class="songs-grid" id="songsGrid"></div>
+        </section>
+
+        <!-- Голосовое -->
+        <section class="voice-section anime-box hidden" id="voiceSection">
+            <div class="section-header">
+                <span class="emoji-icon">🎤</span>
+                <h2 class="section-title">Голосовое сообщение</h2>
+            </div>
+            <div class="voice-container">
+                <button class="voice-btn kawaii-btn" id="voiceBtn">
+                    <span class="voice-icon">🔊</span>
+                    <span>нажми, чтобы услышать</span>
+                    <span class="emoji-icon">🎀</span>
+                </button>
+                <div class="voice-message hidden" id="voiceMessage">
+                    <span class="emoji-icon">💕</span>
+                    <p>привет, мой хороший! с днём рождения! очень скучаю и люблю! ❤️</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Наши места -->
+        <section class="memory-section anime-box hidden" id="memorySection">
+            <div class="section-header">
+                <span class="emoji-icon">🗺️</span>
+                <h2 class="section-title">Наши места</h2>
+            </div>
+            <div class="memory-grid" id="memoryGrid"></div>
+        </section>
+
+        <!-- Финальное сообщение -->
+        <section class="final-section hidden" id="finalSection">
+            <div class="final-message anime-final">
+                <span class="emoji-icon large">🌸</span>
+                <p>спасибо, что эти 6 месяцев — ты меня терпишь. С тобой уюно,будто мы в 12-серийной романтике. и это для меня очень важно. с днём рождения,милый 💫</p>
+                <button class="ps-btn kawaii-btn" id="psBtn">P.S. ✨</button>
+                <div class="ps-content hidden" id="psContent">
+                    <div class="ps-anime">
+                        <span class="emoji-icon">🤗</span>
+                        <p>обещаю, что мы скоро увидимся, и я лично тебя обниму</p>
+                    </div>
+                    <button class="hug-btn kawaii-btn" id="hugBtn">🤗 Обнять (抱きしめる)</button>
+                    <div class="hug-message hidden" id="hugMessage">
+                        <span class="emoji-icon">❤️</span>
+                        <p>Объятия доставлены ❤️</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Мини-игра с буквами (ИСПРАВЛЕННАЯ) -->
+        <section class="game-section anime-box hidden" id="gameSection">
+            <div class="section-header">
+                <span class="emoji-icon">🎮</span>
+                <h2 class="section-title">Собери фразу</h2>
+            </div>
+            <p class="game-hint">Собери 16 сердечек, чтобы получить буквы! ❤️</p>
+            
+            <!-- Контейнер для букв (можно перетаскивать) -->
+            <div class="letters-container" id="lettersContainer"></div>
+            
+            <!-- Контейнер для слотов (горизонтально) -->
+            <div class="phrase-slots-container" id="phraseSlotsContainer"></div>
+            
+            <!-- Кнопка проверки -->
+            <button class="btn primary-btn kawaii-btn check-phrase-btn hidden" id="checkPhraseBtn">Проверить фразу</button>
+            
+            <!-- Сообщение о победе -->
+            <div class="win-message hidden" id="winMessage">
+                <span class="emoji-icon large">🎉</span>
+                <p>ПОЗДРАВЛЯЮ! Ты отгадал фразу! 🎉</p>
+                <p class="love-message">❤️ Я ТЕБЯ ЛЮБЛЮ! ❤️</p>
+                <div class="celebration-cats">
+                    <span class="emoji-icon">😺</span>
+                    <span class="emoji-icon">😸</span>
+                    <span class="emoji-icon">😻</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Кнопка смены фона -->
+    <button class="theme-toggle" id="themeToggle">
+        <span class="emoji-icon">🌈</span>
+        <span>Сменить фон</span>
+    </button>
+
+    <!-- Контейнер для фоновых изображений (цвета вместо картинок) -->
+    <div class="background-layer" id="backgroundLayer"></div>
+
+    <!-- Контейнер для падающих сердечек -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
