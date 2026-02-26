@@ -315,7 +315,7 @@ const voiceAudio = document.createElement('audio');
 voiceAudio.id = 'voiceAudio';
 voiceAudio.src = 'dr.html/moj-golos.mp3'; 
 document.body.appendChild(voiceAudio);
-
+console.log("voiceBtn:", voiceBtn);
 if (voiceBtn) {
     voiceBtn.addEventListener('click', function() {
         console.log('🎤 Воспроизводим голосовое сообщение');
@@ -1075,5 +1075,6 @@ document.addEventListener('click', function(e) {
     console.log('✨ Сайт полностью загружен и готов! ✨');
 
 });
+
 
 
