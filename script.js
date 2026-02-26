@@ -524,75 +524,123 @@ setTimeout(() => {
         });
     }
 
-    // ========== 9. МУЗЫКАЛЬНЫЙ ПЛЕЕР ==========
+    // ========== 9. МУЗЫКАЛЬНЫЙ ПЛЕЕР (iPhone версия) ==========
 
-    function playSong(index) {
-        currentSongIndex = index;
-        const song = songsList[index];
+function playSong(index) {
+    currentSongIndex = index;
+    const song = songsList[index];
+    
+    if (currentSongTitle) {
+        currentSongTitle.textContent = song.title;
+    }
+    
+    if (audio) {
+        audio.src = song.url;
+        audio.load(); // Важно для iPhone: принудительная загрузка
         
-        if (currentSongTitle) {
-            currentSongTitle.textContent = song.title;
-        }
+        // Для iPhone нужно явное разрешение пользователя
+        const playPromise = audio.play();
         
-        if (audio) {
-            audio.src = song.url;
-            audio.play()
+        if (playPromise !== undefined) {
+            playPromise
                 .then(() => {
                     console.log('🎵 Музыка играет:', song.title);
                     isMusicPlaying = true;
                     if (playPauseBtn) playPauseBtn.textContent = '⏸️';
+                    showNotification(`🎵 Играет: ${song.title}`);
                 })
                 .catch(error => {
-                    console.log('❌ Ошибка воспроизведения:', error);
-                    showNotification('❌ Не могу найти файл: ' + song.url);
+                    console.log('❌ Ошибка iPhone:', error);
+                    
+                    // Понятное сообщение для iPhone
+                    showNotification('📱 Нажми на кнопку "Слушать" ещё раз');
+                    
+                    // Создаём кнопку для явного разрешения (если нужно)
+                    if (!document.getElementById('iphone-fix-btn')) {
+                        const fixBtn = document.createElement('button');
+                        fixBtn.id = 'iphone-fix-btn';
+                        fixBtn.innerHTML = '🔊 Разрешить звук';
+                        fixBtn.style.cssText = `
+                            background: #ff6b6b;
+                            color: white;
+                            border: none;
+                            padding: 15px 30px;
+                            border-radius: 50px;
+                            font-size: 18px;
+                            margin: 20px auto;
+                            display: block;
+                            cursor: pointer;
+                            z-index: 10000;
+                            border: 2px solid white;
+                        `;
+                        fixBtn.onclick = function() {
+                            audio.play();
+                            this.remove();
+                            showNotification('🎵 Звук разрешён!');
+                        };
+                        
+                        // Добавляем кнопку после списка песен
+                        const songsSection = document.querySelector('.songs-section');
+                        if (songsSection) {
+                            songsSection.appendChild(fixBtn);
+                        }
+                    }
                 });
         }
+    }
+    
+    addHeart(1);
+}
+
+if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', function() {
+        if (!audio) return;
         
-        showNotification(`🎵 Играет: ${song.title}`);
-        addHeart(1);
-    }
-
-    if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', function() {
-            if (!audio) return;
-            
-            if (audio.paused) {
-                audio.play();
-                this.textContent = '⏸️';
-                isMusicPlaying = true;
-                showNotification('🎵 Музыка играет');
-            } else {
-                audio.pause();
-                this.textContent = '▶️';
-                isMusicPlaying = false;
-                showNotification('🎵 Музыка на паузе');
+        if (audio.paused) {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        this.textContent = '⏸️';
+                        isMusicPlaying = true;
+                        showNotification('🎵 Музыка играет');
+                    })
+                    .catch(() => {
+                        showNotification('📱 Нажми ещё раз');
+                    });
             }
-        });
-    }
-
-    if (nextSongBtn) {
-        nextSongBtn.addEventListener('click', function() {
-            currentSongIndex = (currentSongIndex + 1) % songsList.length;
-            playSong(currentSongIndex);
-        });
-    }
-
-    if (audio) {
-        audio.addEventListener('ended', function() {
-            currentSongIndex = (currentSongIndex + 1) % songsList.length;
-            playSong(currentSongIndex);
-        });
-    }
-
-    // Обработчик кликов на кнопки "Слушать" в песнях
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('song-play-btn')) {
-            const index = e.target.dataset.index;
-            if (index !== undefined) {
-                playSong(parseInt(index));
-            }
+        } else {
+            audio.pause();
+            this.textContent = '▶️';
+            isMusicPlaying = false;
+            showNotification('🎵 Музыка на паузе');
         }
     });
+}
+
+if (nextSongBtn) {
+    nextSongBtn.addEventListener('click', function() {
+        currentSongIndex = (currentSongIndex + 1) % songsList.length;
+        playSong(currentSongIndex);
+    });
+}
+
+if (audio) {
+    audio.addEventListener('ended', function() {
+        currentSongIndex = (currentSongIndex + 1) % songsList.length;
+        playSong(currentSongIndex);
+    });
+}
+
+// Обработчик кликов на кнопки "Слушать" в песнях
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('song-play-btn')) {
+        const index = e.target.dataset.index;
+        if (index !== undefined) {
+            playSong(parseInt(index));
+        }
+    }
+});
 
     // ========== 10. СМЕНА ФОНА ==========
     
@@ -1025,4 +1073,5 @@ document.addEventListener('click', function(e) {
     document.head.appendChild(style);
 
     console.log('✨ Сайт полностью загружен и готов! ✨');
+
 });
