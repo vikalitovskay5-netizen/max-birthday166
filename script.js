@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Создаем аудио элемент для голосового
 const voiceAudio = document.createElement('audio');
 voiceAudio.id = 'voiceAudio';
-voiceAudio.src = 'moj-golos.mp3'; 
+voiceAudio.src = 'dr.html/moj-golos.mp3'; 
 document.body.appendChild(voiceAudio);
 
 if (voiceBtn) {
@@ -1075,4 +1075,5 @@ document.addEventListener('click', function(e) {
     console.log('✨ Сайт полностью загружен и готов! ✨');
 
 });
+
 
